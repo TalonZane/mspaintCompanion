@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mspaintCompanion", "mspaintCompanion.csproj", "{D31FB0D3-8D7C-4068-AD19-5BD098A68B31}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D31FB0D3-8D7C-4068-AD19-5BD098A68B31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D31FB0D3-8D7C-4068-AD19-5BD098A68B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D31FB0D3-8D7C-4068-AD19-5BD098A68B31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D31FB0D3-8D7C-4068-AD19-5BD098A68B31}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9EA1A2DE-C171-4F0B-9148-A58EBBEF7643}
+	EndGlobalSection
+EndGlobal
