@@ -1,7 +1,7 @@
 ﻿
 namespace mspaintCompanion
 {
-    partial class Main
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace mspaintCompanion
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.AddLayer = new System.Windows.Forms.Button();
             this.LayerPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.DeleteButton = new System.Windows.Forms.Button();
@@ -48,7 +48,7 @@ namespace mspaintCompanion
             this.AddLayer.TabIndex = 0;
             this.AddLayer.Text = "+";
             this.AddLayer.UseVisualStyleBackColor = true;
-            this.AddLayer.Click += new System.EventHandler(this.AddLayer_Click);
+            this.AddLayer.Click += new System.EventHandler(this.HandleAddLayerButtonClick);
             // 
             // LayerPanel
             // 
@@ -70,7 +70,7 @@ namespace mspaintCompanion
             this.DeleteButton.TabIndex = 2;
             this.DeleteButton.Text = "-";
             this.DeleteButton.UseVisualStyleBackColor = true;
-            this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
+            this.DeleteButton.Click += new System.EventHandler(this.HandleDeleteButtonClick);
             // 
             // TransparencyColor
             // 
@@ -86,7 +86,7 @@ namespace mspaintCompanion
             this.transparency.TabIndex = 4;
             this.transparency.Text = "Transparent Color";
             this.transparency.UseVisualStyleBackColor = true;
-            this.transparency.Click += new System.EventHandler(this.transparency_Click);
+            this.transparency.Click += new System.EventHandler(this.HandleTransparencyClick);
             // 
             // ExportButton
             // 
@@ -96,7 +96,7 @@ namespace mspaintCompanion
             this.ExportButton.TabIndex = 5;
             this.ExportButton.Text = "Export";
             this.ExportButton.UseVisualStyleBackColor = true;
-            this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
+            this.ExportButton.Click += new System.EventHandler(this.HandleExportButtonClick);
             // 
             // ExportDialog
             // 
@@ -112,7 +112,7 @@ namespace mspaintCompanion
             this.ExportButton_Transparent.UseVisualStyleBackColor = true;
             this.ExportButton_Transparent.Click += new System.EventHandler(this.ExportButton_Transparent_Click);
             // 
-            // Main
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -127,11 +127,11 @@ namespace mspaintCompanion
             this.Font = new System.Drawing.Font("Comic Sans MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Main";
+            this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "mspaintCompanion";
             this.TopMost = true;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HandleFormClosing);
             this.ResumeLayout(false);
 
         }
@@ -139,13 +139,13 @@ namespace mspaintCompanion
         #endregion
 
         private System.Windows.Forms.Button AddLayer;
-        private System.Windows.Forms.FlowLayoutPanel LayerPanel;
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.ColorDialog TransparencyColor;
         private System.Windows.Forms.Button ExportButton;
         private System.Windows.Forms.SaveFileDialog ExportDialog;
         private System.Windows.Forms.Button ExportButton_Transparent;
         private System.Windows.Forms.Button transparency;
+        public System.Windows.Forms.FlowLayoutPanel LayerPanel;
     }
 }
 

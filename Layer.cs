@@ -4,49 +4,47 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Threading;
+using mspaintCompanion.Native;
 
 namespace mspaintCompanion
 {
+    /// <summary>
+    /// Represents a single layer in the main user interface form.
+    /// </summary>
     public partial class Layer : UserControl
     {
-        public int index;
+        public int SelectedIndex;
         public bool IsLayerVisible = true;
         public bool IsLayerActive = false;
 
-        [DllImport("USER32.DLL")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        public Image fullres, thumbnail;
+        public Image FullResolution, Thumbnail;
 
         public Layer()
         {
             InitializeComponent();
 
-            Main.Layers.Add(this);
-            Main._LayerPanel.Controls.Add(this);
-            index = Main.Layers.Count - 1;
-            LayerLabel.Text = "(" + (index + 1) + ")";
+            MainForm.Layers.Add(this);
+            MainForm.Instance.LayerPanel.Controls.Add(this);
+            SelectedIndex = MainForm.Layers.Count - 1;
+            LayerLabel.Text = $"({SelectedIndex + 1})";
 
-            Image i = Main.GetCanvasImage();
+            Image i = MainForm.GetCanvasImage();
 
-            fullres = i;
+            FullResolution = i;
 
-            SetActiveLayer(this);
+            SetAsActive();
         }
-
-        [DllImport("User32.dll")]
-        static extern IntPtr GetDC(IntPtr hwnd);
-
-        [DllImport("User32.dll")]
-        static extern int ReleaseDC(IntPtr hwnd, IntPtr dc);
 
         public void RefreshThumbnail()
         {
-            thumbnail = new Bitmap(fullres, LayerThumbnail.Size);
-            LayerThumbnail.Image = thumbnail;
+            Thumbnail = new Bitmap(FullResolution, LayerThumbnail.Size);
+            LayerThumbnail.Image = Thumbnail;
         }
 
-        public void SetInactiveLayer()
+        /// <summary>
+        /// Sets the state of the layer represented by this control as "inactive".
+        /// </summary>
+        public void SetAsInactive()
         {
             IsLayerActive = false;
             Active.Checked = false;
@@ -54,75 +52,83 @@ namespace mspaintCompanion
             isVisible.Enabled = true;
         }
 
-        public static void SetActiveLayer(Layer layer)
+        /// <summary>
+        /// Sets the state of the layer represented by this control as "active".
+        /// </summary>
+        public void SetAsActive()
         {
-            Layer oldActiveLayer = Main.ActiveLayer;
-            Main.UpdateLayer(oldActiveLayer, Main.GetCanvasImage());
+            Layer oldActiveLayer = MainForm.ActiveLayer;
+            MainForm.UpdateLayer(oldActiveLayer, MainForm.GetCanvasImage());
 
-            Main.UpdateActive();
+            MainForm.MarkAllAsInactive();
 
-            layer.IsLayerActive = true;
+            this.IsLayerActive = true;
 
-            layer.Active.Checked = true;
-            layer.ActiveLabel.Text = "ACTIVE";
-            Main.ActiveLayer = layer;
-            layer.isVisible.Checked = true;
-            layer.isVisible.Enabled = false;
+            this.Active.Checked = true;
+            this.ActiveLabel.Text = "ACTIVE";
+            MainForm.ActiveLayer = this;
+            this.isVisible.Checked = true;
+            this.isVisible.Enabled = false;
 
+            IntPtr hwnd = MainForm.PaintProcess.MainWindowHandle;
 
-            IntPtr hwnd = Main.mspaint.MainWindowHandle;
-            if (SetForegroundWindow(hwnd))
+            if (User32.SetForegroundWindow(hwnd))
             {
-                Clipboard.SetData(DataFormats.Bitmap, layer.fullres);
+                Clipboard.SetData(DataFormats.Bitmap, this.FullResolution);
                 Thread.Sleep(20);
                 SendKeys.SendWait("^v");
             }
 
-            LayerRenderer.Inst.UpdateRenderer();
+            LayerRenderer.Instance.UpdateRenderer();
         }
 
-        private void Active_Click(object sender, EventArgs e)
+        private void HandleActiveClick(object sender, EventArgs e)
         {
-            SetActiveLayer(this);
+            SetAsActive();
         }
+
+        /// <summary>
+        /// Updates the label (tag) associated with the layer, as displayed to
+        /// the end-user.
+        /// </summary>
         public void UpdateLayerTag()
         {
-            LayerLabel.Text = "(" + (index + 1) + ")";
+            LayerLabel.Text = $"({SelectedIndex + 1})";
         }
 
         private void MoveLayerUp_Click(object sender, EventArgs e)
         {
-            if (index == 0) return;
+            if (SelectedIndex == 0) return;
 
-            Main.Layers.RemoveAt(index);
-            Main.Layers.Insert(index - 1, this);
+            MainForm.Layers.RemoveAt(SelectedIndex);
+            MainForm.Layers.Insert(SelectedIndex - 1, this);
 
-            Main.MoveLayer(this, index - 1);
+            MainForm.MoveLayer(this, SelectedIndex - 1);
 
-            Main.UpdateLayerTags();
+            MainForm.UpdateLayerTags();
 
-            LayerRenderer.Inst.UpdateRenderer();
+            LayerRenderer.Instance.UpdateRenderer();
 
             Refresh();
         }
 
         private void MoveLayerDown_Click(object sender, EventArgs e)
         {
-            if (index == Main.Layers.Count - 1) return;
+            if (SelectedIndex == MainForm.Layers.Count - 1) return;
 
-            Main.Layers.RemoveAt(index);
-            Main.Layers.Insert(index + 1, this);
+            MainForm.Layers.RemoveAt(SelectedIndex);
+            MainForm.Layers.Insert(SelectedIndex + 1, this);
 
-            Main.MoveLayer(this, index + 1);
+            MainForm.MoveLayer(this, SelectedIndex + 1);
 
-            Main.UpdateLayerTags();
+            MainForm.UpdateLayerTags();
 
-            LayerRenderer.Inst.UpdateRenderer();
+            LayerRenderer.Instance.UpdateRenderer();
 
             Refresh();
         }
 
-        private void onLayerVisiblityToggled(object sender, EventArgs e)
+        private void OnLayerVisiblityToggled(object sender, EventArgs e)
         {
             if (isVisible.CheckState == CheckState.Checked)
             {
@@ -133,7 +139,7 @@ namespace mspaintCompanion
                 IsLayerVisible = false;
             }
 
-            LayerRenderer.Inst.UpdateRenderer();
+            LayerRenderer.Instance.UpdateRenderer();
         }
     }
 }

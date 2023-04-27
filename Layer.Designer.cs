@@ -49,7 +49,7 @@ namespace mspaintCompanion
             this.isVisible.Size = new System.Drawing.Size(15, 14);
             this.isVisible.TabIndex = 0;
             this.isVisible.UseVisualStyleBackColor = true;
-            this.isVisible.CheckStateChanged += new System.EventHandler(this.onLayerVisiblityToggled);
+            this.isVisible.CheckStateChanged += new System.EventHandler(this.OnLayerVisiblityToggled);
             // 
             // LayerThumbnail
             // 
@@ -68,7 +68,7 @@ namespace mspaintCompanion
             this.Active.Size = new System.Drawing.Size(15, 14);
             this.Active.TabIndex = 3;
             this.Active.UseVisualStyleBackColor = true;
-            this.Active.Click += new System.EventHandler(this.Active_Click);
+            this.Active.Click += new System.EventHandler(this.HandleActiveClick);
             // 
             // ActiveLabel
             // 
